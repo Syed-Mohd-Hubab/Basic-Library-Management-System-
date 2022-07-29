@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="bookscontent">
+    <h1 style="text-align:center;">Library Reports:</h1>
+    <h4 style="text-align:center;"> Most popular book: </h4>
+    <table>
+        <tr>
+            <th>BookID</th>
+            <th>Title</th>
+            <th>Qty</th>
+            <th>Authors</th>
+            <th>Pages</th>
+            <th>Rating</th>
+        </tr>
+        <tr>
+            <td>{{ book.bookID }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.quantity }}</td>
+            <td>{{ book.authors }}</td>
+            <td>{{ book.pages }}</td>
+            <td>{{ book.rating }}</td>
+        </tr>
+    </table>
+    
+    <br><br>
+    
+    <h4 style="text-align:center;"> Top paying Member: </h4>
+    <table>
+        <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Amount Paid</th>
+        </tr>
+        <tr>
+            <td>{{ user.userID }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ amount }}</td>
+        </tr>
+    </table>
+</div>
+
+{% endblock %}

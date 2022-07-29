@@ -186,12 +186,18 @@ def debts():
     for userid in total_debts.keys():
         user = usersDB.query.get_or_404(userid)
         total_debts[userid]['name'] = user.name
-    print('HERERE:')
-    print(total_debts)
     # except Exception as e:
     #     return 'err in debt:'+str(e)
 
     return render_template('debts.html', total_debts=total_debts)
+
+@app.route('/reports')
+def reports():
+    top_book = booksDB.query.order_by(booksDB.quantity.desc()).first()  
+    top_userid = transactionsDB.query.order_by(transactionsDB.paid.desc()).first()
+    top_user = usersDB.query.get_or_404(top_userid.userID)
+
+    return render_template('report.html', book=top_book, user=top_user, amount=top_userid.paid)
 
 if __name__ == "__main__":
     app.run(debug = True)
