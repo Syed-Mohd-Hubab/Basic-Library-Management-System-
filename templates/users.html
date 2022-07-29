@@ -33,10 +33,12 @@
                 </td>
                 {% if user.book_assigned > 0 %}
                 <td>
-                        <form action="/return/{{user.book_assigned}}" method="POST">
-                            <input type="text" name="userid" id="userid" value="{{user.userID}}" hidden>
-                            <input type="submit" value="Return Book">
-                        </form>
+                    <form action="/return/{{user.book_assigned}}" method="POST">
+                        <input type="text" name="userid" id="userid" value="{{user.userID}}" hidden>
+                        <input type="number" name="amount_due" id="amount_due" value="{{time_assigned*0.250}}" hidden>
+                        <input type="number" name='payment' id='payment' placeholder="Enter payment amount">
+                        <input type="submit" value="Return Book">
+                    </form>
                 </td>
                 {% else %}
                 <td>

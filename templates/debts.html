@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="bookscontent">
+    <h1 style="text-align:center;">Debts Records:</h1>
+    <table>
+        <tr>
+            <th>User Name</th>
+            <th>Paid Amount</th>
+            <th>Debt Amount</th>
+        </tr>
+        {% if total_debts|length > 0 %}
+        {% for id in total_debts.keys() %}
+            <tr>
+                <td>{{ total_debts[id]['name'] }}</td>
+                <td>{{ total_debts[id]['paid'] }}</td>
+                <td>{{ total_debts[id]['debt'] }}</td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+
+
+{% endblock %}
+
+

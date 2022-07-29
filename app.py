@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import jinja2
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_BINDS'] = {  'two':'sqlite:///users.db'  }
+app.config['SQLALCHEMY_BINDS'] = {  
+                                    'two':'sqlite:///users.db',
+                                    'three':'sqlite:///transactions.db'
+                            }
 
 db = SQLAlchemy(app)
 
@@ -26,6 +28,13 @@ class usersDB(db.Model):
     book_assigned = db.Column(db.Integer, default=0)
     book_assigned_date = db.Column(db.DateTime, default=None) 
 
+class transactionsDB(db.Model):
+    __bind_key__ = 'three'
+    transactionID = db.Column(db.Integer, primary_key = True)
+    userID = db.Column(db.Integer)
+    bookID = db.Column(db.Integer)
+    paid = db.Column(db.Float)
+    debt = db.Column(db.Float)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -148,12 +157,41 @@ def returnbook(bookid):
         user = usersDB.query.get_or_404(user_id)
         user.book_assigned = 0
         user.book_assigned_date = None
+        payment = request.form['payment']
+        amount_due = request.form['amount_due']
+        bal = float(payment) - float(amount_due)
+        new_transaction = transactionsDB(userID=user_id, bookID=bookid, paid=payment, debt=bal)
         try:
+            db.session.add(new_transaction)
             db.session.commit()    
             return redirect('/members')
         except Exception as e:
             return 'Couldnt return book from user:'+str(e)
 
+@app.route('/debts', methods=['GET'])
+def debts():
+    transactions = transactionsDB.query.all()
+    total_debts = {}
+    # try:
+    for t in transactions:
+        user_obj = {}
+        if t.userID in total_debts:
+            total_debts[t.userID]['debt'] += float(t.debt)
+            total_debts[t.userID]['paid'] += float(t.paid)
+        else:
+            user_obj['debt'] = float(t.debt)
+            user_obj['paid'] = float(t.paid)
+            total_debts[t.userID] = user_obj
+    
+    for userid in total_debts.keys():
+        user = usersDB.query.get_or_404(userid)
+        total_debts[userid]['name'] = user.name
+    print('HERERE:')
+    print(total_debts)
+    # except Exception as e:
+    #     return 'err in debt:'+str(e)
+
+    return render_template('debts.html', total_debts=total_debts)
 
 if __name__ == "__main__":
     app.run(debug = True)
