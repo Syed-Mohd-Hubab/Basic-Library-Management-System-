@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+<div class="content">
+    <h1> Book Details Updation </h1>
+
+    <form action="/updatebook/{{book.bookID}}" method="POST">
+        Book Quantity: <input type="text" name="qty" id="qty" value="{{book.quantity}}">
+        <br>
+          Book Rating: <input type="text" name="rating" id="rating" value="{{book.rating}}">
+        <br><br>
+        <input type="submit" style="text-align: center; margin: auto;" value="Update Book">
+    </form>
+
+</div>
+{% endblock %}
+

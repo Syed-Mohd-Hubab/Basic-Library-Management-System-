@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="bookscontent">
+    <h1 style="text-align:center;">Library Members:</h1>
+    <table>
+        <tr>
+            <!-- <th>#</th> -->
+            <!-- <th>UserID</th> -->
+            <th>Name</th>
+            <th>Book Assigned</th>
+            <th>Assign to UserID</th>
+        </tr>
+        {% if users|length > 0 %}
+        {% for user in users %}
+            <tr>
+                <!-- <td>{{ loop.index }}</td> -->
+                <!-- <td>{{ user.userID }}</td> -->
+                <td>{{ user.name }}</td>
+                <td>{{ user.book_assigned }}</td>
+                <td>
+                    <!-- <a href='/'>Return the book</a> -->
+                    {% if user.book_assigned==0 %}
+                        <form action="/assignbook/{{bookid}}" method="POST">
+                            <input type="text" name="userid" id="userid" value="{{user.userID}}" hidden>
+                            <input type="submit" value="Assign Book">
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+
+
+{% endblock %}
+
+

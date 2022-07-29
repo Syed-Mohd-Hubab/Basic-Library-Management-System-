@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="bookscontent">
+    <h1 style="text-align:center;"> All Available Books: </h1>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>BookID</th>
+            <th>Title</th>
+            <th>Qty</th>
+            <th>Authors</th>
+            <th>Pages</th>
+            <th>Rating</th>
+            <th>Assigning</th>
+            <th>Deleting</th>
+            <th>Updating</th>
+        </tr>
+        {% if books|length > 0 %}
+        {% for book in books %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ book.bookID }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.quantity }}</td>
+                <td>{{ book.authors }}</td>
+                <td>{{ book.pages }}</td>
+                <td>{{ book.rating }}</td>
+                {% if book.quantity > 0 %}
+                <td>
+                    <a href='/assignbook/{{book.bookID}}'>Assign to member</a>
+                </td>
+                <td>
+                    <a href="/deletebook/{{book.bookID}}">Delete Book</a>
+                </td>
+                {% else %}
+                <td>
+                    <a href='' style="color: rgb(256, 0, 0); pointer-events: none; cursor: default;">Assign to member</a>
+                </td>
+                <td>
+                    <a href='' style="color: rgb(256, 0, 0); pointer-events: none; cursor: default;">Delete Book</a>
+                </td>
+                {% endif %}
+                <td>
+                    <a href="/updatebook/{{book.bookID}}">Update Book</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+
+
+{% endblock %}
+
+

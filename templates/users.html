@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="bookscontent">
+    <h1 style="text-align:center;">Library Members:</h1>
+    <table>
+        <tr>
+            <!-- <th>#</th> -->
+            <th>UserID</th>
+            <th>Name</th>
+            <th>Book Assigned</th>
+            <th>Time Assigned</th>
+            <th>Update User</th>
+        </tr>
+        {% if users|length > 0 %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.userID }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.book_assigned }}</td>
+                {% if user.book_assigned_date is not none %}
+                    {% set time_assigned = ((date_now - user.book_assigned_date).total_seconds()/60)|round %}
+                    <td>{{ time_assigned|int }} minutes. Est Bill is {{' KWD:'}}{{ time_assigned*0.250 }}</td>
+                {% else %}
+                    <td>None</td>
+                {% endif %}
+                <td>
+                    <a href="/updateuser/{{user.userID}}">Update User</a>
+                </td>
+                {% if user.book_assigned > 0 %}
+                <td>
+                        <form action="/return/{{user.book_assigned}}" method="POST">
+                            <input type="text" name="userid" id="userid" value="{{user.userID}}" hidden>
+                            <input type="submit" value="Return Book">
+                        </form>
+                </td>
+                {% else %}
+                <td>
+                    <a href="/deleteuser/{{user.userID}}">Delete Member</a>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="bookscontent">
+    <h1 style="text-align:center;"> Books Search Results: </h1>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>BookID</th>
+            <th>Title</th>
+            <th>Qty</th>
+            <th>Authors</th>
+            <th>Pages</th>
+            <th>Rating</th>
+        </tr>
+
+        {% for book in books %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ book.bookID }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.quantity }}</td>
+                <td>{{ book.authors }}</td>
+                <td>{{ book.pages }}</td>
+                <td>{{ book.rating }}</td>
+                <td>
+                    {% if book.quantity > 0 %}
+                        <a href='/assignbook/{{book.bookID}}'>Assign to member</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        
+    </table>
+</div>
+
+
+{% endblock %}
+
+

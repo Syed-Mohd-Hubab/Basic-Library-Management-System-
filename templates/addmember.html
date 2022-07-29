@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h2> Adding Users </h2>
+    <form action="/addmember" method="POST">
+        <input type="text" name="username" id="username" placeholder="Enter Member Name">
+        <input type="submit" value="Add User">
+    </form>
+
+</div>
+{% endblock %}
+
